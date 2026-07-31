@@ -1,0 +1,192 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8"
+"Content-Transfer-Encoding: 8bit"
+"Language: zh_CN"
+
+msgid "A compact macOS Spotlight inspired launcher for GNOME Shell."
+msgstr "一个受 macOS Spotlight 启发、为 GNOME Shell 打造的简洁启动器。"
+
+msgid "About"
+msgstr "关于"
+
+msgid "Accessibility"
+msgstr "无障碍"
+
+msgid "Appearance"
+msgstr "外观"
+
+msgid "Applications"
+msgstr "应用"
+
+msgid "Background"
+msgstr "背景"
+
+msgid "Bluetooth"
+msgstr "蓝牙"
+
+msgid "Calculator"
+msgstr "计算器"
+
+msgid "Click here, then press a key combination"
+msgstr "点击此处，然后按下组合键"
+
+msgid "Color"
+msgstr "颜色"
+
+msgid "Date & Time"
+msgstr "日期与时间"
+
+msgid "Displays"
+msgstr "显示器"
+
+msgid "Files"
+msgstr "文件"
+
+msgid "GitHub repository"
+msgstr "GitHub 仓库"
+
+msgid "Folder · %s"
+msgstr "文件夹 · %s"
+
+msgid "GNOME Settings"
+msgstr "GNOME 设置"
+
+msgid "Keyboard"
+msgstr "键盘"
+
+msgid "Keyboard Shortcut"
+msgstr "键盘快捷键"
+
+msgid "Lock Screen"
+msgstr "锁定屏幕"
+
+msgid "Log Out"
+msgstr "注销"
+
+msgid "Max results per category"
+msgstr "每类最大结果数"
+
+msgid "Mouse & Touchpad"
+msgstr "鼠标与触摸板"
+
+msgid "Multitasking"
+msgstr "多任务"
+
+msgid "Network"
+msgstr "网络"
+
+msgid "No Results"
+msgstr "无结果"
+
+msgid "No results for "%s""
+msgstr "没有“%s”的结果"
+
+msgid "Not set (will default to Ctrl+Space)"
+msgstr "未设置（将默认使用 Ctrl+Space）"
+
+msgid "Notifications"
+msgstr "通知"
+
+msgid "Online Accounts"
+msgstr "在线账户"
+
+msgid "Theme"
+msgstr "主题"
+
+msgid "Color scheme of the popup"
+msgstr "弹窗的配色方案"
+
+msgid "Popup width"
+msgstr "弹窗宽度"
+
+msgid "Power"
+msgstr "电源"
+
+msgid "Press Enter to copy to clipboard"
+msgstr "按回车复制到剪贴板"
+
+msgid "Press a key combination..."
+msgstr "按下组合键…"
+
+msgid "Printers"
+msgstr "打印机"
+
+msgid "Privacy"
+msgstr "隐私"
+
+msgid "Region & Language"
+msgstr "区域与语言"
+
+msgid "Reset"
+msgstr "重置"
+
+msgid "Reset to default"
+msgstr "重置为默认"
+
+msgid "Restart"
+msgstr "重启"
+
+msgid "Results"
+msgstr "结果"
+
+msgid "Search"
+msgstr "搜索"
+
+msgid "Search apps..."
+msgstr "搜索应用…"
+
+msgid "Search engine"
+msgstr "搜索引擎"
+
+msgid "Set shortcut to Ctrl+Space"
+msgstr "将快捷键设置为 Ctrl+Space"
+
+msgid "Set the shortcut to open Spotlight"
+msgstr "设置打开 Spotlight 的快捷键"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "Sharing"
+msgstr "共享"
+
+msgid "Show web search fallback"
+msgstr "显示网页搜索兜底结果"
+
+msgid "Shut Down"
+msgstr "关机"
+
+msgid "Sound"
+msgstr "声音"
+
+msgid "Suspend"
+msgstr "挂起"
+
+msgid "Switch User"
+msgstr "切换用户"
+
+msgid "System"
+msgstr "系统"
+
+msgid "System Actions"
+msgstr "系统操作"
+
+msgid "Toggle shortcut"
+msgstr "切换快捷键"
+
+msgid "Users"
+msgstr "用户"
+
+msgid "Web Search"
+msgstr "网页搜索"
+
+msgid "Web search only appears when no apps or settings match"
+msgstr "仅当没有匹配的应用或设置时才显示网页搜索"
+
+msgid "Wi-Fi"
+msgstr "Wi-Fi"
+
+msgid "Width in pixels"
+msgstr "宽度（像素）"
+

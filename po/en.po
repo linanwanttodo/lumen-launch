@@ -1,0 +1,191 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8"
+"Content-Transfer-Encoding: 8bit"
+"Language: en"
+
+msgid ""
+msgstr ""
+
+msgid "A compact macOS Spotlight inspired launcher for GNOME Shell."
+msgstr "A compact macOS Spotlight inspired launcher for GNOME Shell."
+
+msgid "About"
+msgstr "About"
+
+msgid "Accessibility"
+msgstr "Accessibility"
+
+msgid "Appearance"
+msgstr "Appearance"
+
+msgid "Applications"
+msgstr "Applications"
+
+msgid "Background"
+msgstr "Background"
+
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+msgid "Calculator"
+msgstr "Calculator"
+
+msgid "Click here, then press a key combination"
+msgstr "Click here, then press a key combination"
+
+msgid "Color"
+msgstr "Color"
+
+msgid "Date & Time"
+msgstr "Date & Time"
+
+msgid "Displays"
+msgstr "Displays"
+
+msgid "Files"
+msgstr "Files"
+
+msgid "GitHub repository"
+msgstr "GitHub repository"
+
+msgid "Folder · %s"
+msgstr "Folder · %s"
+
+msgid "GNOME Settings"
+msgstr "GNOME Settings"
+
+msgid "Keyboard"
+msgstr "Keyboard"
+
+msgid "Keyboard Shortcut"
+msgstr "Keyboard Shortcut"
+
+msgid "Lock Screen"
+msgstr "Lock Screen"
+
+msgid "Log Out"
+msgstr "Log Out"
+
+msgid "Max results per category"
+msgstr "Max results per category"
+
+msgid "Mouse & Touchpad"
+msgstr "Mouse & Touchpad"
+
+msgid "Multitasking"
+msgstr "Multitasking"
+
+msgid "Network"
+msgstr "Network"
+
+msgid "No Results"
+msgstr "No Results"
+
+msgid "Not set (will default to Ctrl+Space)"
+msgstr "Not set (will default to Ctrl+Space)"
+
+msgid "Notifications"
+msgstr "Notifications"
+
+msgid "Online Accounts"
+msgstr "Online Accounts"
+
+msgid "Theme"
+msgstr "Theme"
+
+msgid "Color scheme of the popup"
+msgstr "Color scheme of the popup"
+
+msgid "Popup width"
+msgstr "Popup width"
+
+msgid "Power"
+msgstr "Power"
+
+msgid "Press Enter to copy to clipboard"
+msgstr "Press Enter to copy to clipboard"
+
+msgid "Press a key combination..."
+msgstr "Press a key combination..."
+
+msgid "Printers"
+msgstr "Printers"
+
+msgid "Privacy"
+msgstr "Privacy"
+
+msgid "Region & Language"
+msgstr "Region & Language"
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Reset to default"
+msgstr "Reset to default"
+
+msgid "Restart"
+msgstr "Restart"
+
+msgid "Results"
+msgstr "Results"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Search apps..."
+msgstr "Search apps..."
+
+msgid "Search engine"
+msgstr "Search engine"
+
+msgid "Set shortcut to Ctrl+Space"
+msgstr "Set shortcut to Ctrl+Space"
+
+msgid "Set the shortcut to open Spotlight"
+msgstr "Set the shortcut to open Spotlight"
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Sharing"
+msgstr "Sharing"
+
+msgid "Show web search fallback"
+msgstr "Show web search fallback"
+
+msgid "Shut Down"
+msgstr "Shut Down"
+
+msgid "Sound"
+msgstr "Sound"
+
+msgid "Suspend"
+msgstr "Suspend"
+
+msgid "Switch User"
+msgstr "Switch User"
+
+msgid "System"
+msgstr "System"
+
+msgid "System Actions"
+msgstr "System Actions"
+
+msgid "Toggle shortcut"
+msgstr "Toggle shortcut"
+
+msgid "Users"
+msgstr "Users"
+
+msgid "Web Search"
+msgstr "Web Search"
+
+msgid "Web search only appears when no apps or settings match"
+msgstr "Web search only appears when no apps or settings match"
+
+msgid "Wi-Fi"
+msgstr "Wi-Fi"
+
+msgid "Width in pixels"
+msgstr "Width in pixels"

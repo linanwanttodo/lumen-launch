@@ -1,0 +1,403 @@
+/* spotlight - stylesheet */
+/* single rounded-card style like Ulauncher: the outer container draws the */
+/* background + radius + shadow, entry box and results are transparent and */
+/* sit seamlessly inside it. */
+/* Color scheme is themeable (rofi-style): the active theme is applied as a */
+/* class on the container (spotlight-theme-<id>, see gschema "theme"). */
+/* Layout rules live at the top; per-theme colors follow. */
+
+/* global reset for spotlight widgets - kill any inherited focus outline or */
+/* border that the parent theme might draw around actors we add to the chrome layer */
+.spotlight-container,
+.spotlight-container * {
+  border: none;
+  outline: none;
+}
+
+/* outer container - single rounded card that holds entry + results */
+.spotlight-container {
+  border-radius: 24px;
+  padding: 8px;
+}
+
+/* search icon on the left side of the entry */
+.spotlight-search-icon {
+  icon-size: 18px;
+  padding: 0 12px 0 14px;
+}
+
+/* entry box - transparent, lives inside the card */
+.spotlight-entry-box {
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+/* the actual entry inside the entry box */
+.spotlight-entry {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 8px 14px 8px 0;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.spotlight-entry:focus {
+  border: none;
+  outline: none;
+}
+
+/* results list - transparent, lives inside the card */
+/* fixed height of ~5 result rows so the popup stays at "search box + 5 rows" */
+/* and more results are reached by scrolling */
+.spotlight-results {
+  background-color: transparent;
+  border-radius: 0;
+  padding: 4px 0 2px 0;
+  max-height: 220px;
+  margin-top: 2px;
+  box-shadow: none;
+}
+
+/* single result row - rounded highlight bar like Ulauncher */
+.spotlight-result {
+  padding: 8px 12px;
+  border-radius: 12px;
+  transition-duration: 100ms;
+  spacing: 12px;
+}
+
+.spotlight-result-icon {
+  padding-right: 12px;
+}
+
+.spotlight-result-content {
+  x_expand: true;
+}
+
+.spotlight-result-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: inherit;
+}
+
+.spotlight-result-description {
+  font-size: 11px;
+  padding-top: 1px;
+}
+
+/* no results empty state */
+.spotlight-no-results {
+  padding: 28px 24px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.spotlight-no-results-title {
+  font-size: 14px;
+  font-weight: 500;
+  padding-bottom: 4px;
+}
+
+/* ================================================================== */
+/* themes                                                              */
+/* each theme overrides background, text, secondary text, hover bar,   */
+/* accent, caret and selection color for every popup surface.          */
+/* ================================================================== */
+
+/* ---------- dark (default, macOS-like) ---------- */
+.spotlight-container.spotlight-theme-dark,
+.spotlight-container {
+  background-color: rgb(28, 28, 30);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.spotlight-theme-dark .spotlight-search-icon {
+  color: #98989d;
+}
+
+.spotlight-theme-dark .spotlight-entry {
+  color: #f5f5f7;
+  caret-color: #ffffff;
+  selection-background-color: #0a84ff;
+}
+
+.spotlight-theme-dark .spotlight-entry StLabel.hint-text {
+  color: rgba(245, 245, 247, 0.35);
+}
+
+.spotlight-theme-dark .spotlight-result {
+  color: #f5f5f7;
+}
+
+.spotlight-theme-dark .spotlight-result:hover,
+.spotlight-theme-dark .spotlight-result:focus,
+.spotlight-theme-dark .spotlight-result.spotlight-selected {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.spotlight-theme-dark .spotlight-result-description {
+  color: #98989d;
+}
+
+.spotlight-theme-dark .spotlight-result:hover .spotlight-result-description,
+.spotlight-theme-dark .spotlight-result:focus .spotlight-result-description,
+.spotlight-theme-dark .spotlight-result.spotlight-selected .spotlight-result-description {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.spotlight-theme-dark .spotlight-no-results {
+  color: #98989d;
+}
+
+.spotlight-theme-dark .spotlight-no-results-title {
+  color: #f5f5f7;
+}
+
+/* ---------- light ---------- */
+.spotlight-container.spotlight-theme-light {
+  background-color: rgb(246, 246, 247);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+.spotlight-theme-light .spotlight-search-icon {
+  color: #86868b;
+}
+
+.spotlight-theme-light .spotlight-entry {
+  color: #1d1d1f;
+  caret-color: #1d1d1f;
+  selection-background-color: #0a84ff;
+}
+
+.spotlight-theme-light .spotlight-entry StLabel.hint-text {
+  color: rgba(29, 29, 31, 0.35);
+}
+
+.spotlight-theme-light .spotlight-result {
+  color: #1d1d1f;
+}
+
+.spotlight-theme-light .spotlight-result:hover,
+.spotlight-theme-light .spotlight-result:focus,
+.spotlight-theme-light .spotlight-result.spotlight-selected {
+  background-color: rgba(0, 0, 0, 0.08);
+  color: #000000;
+}
+
+.spotlight-theme-light .spotlight-result-description {
+  color: #86868b;
+}
+
+.spotlight-theme-light .spotlight-result:hover .spotlight-result-description,
+.spotlight-theme-light .spotlight-result:focus .spotlight-result-description,
+.spotlight-theme-light .spotlight-result.spotlight-selected .spotlight-result-description {
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.spotlight-theme-light .spotlight-no-results {
+  color: #86868b;
+}
+
+.spotlight-theme-light .spotlight-no-results-title {
+  color: #1d1d1f;
+}
+
+/* ---------- nord ---------- */
+.spotlight-container.spotlight-theme-nord {
+  background-color: #2e3440;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.spotlight-theme-nord .spotlight-search-icon {
+  color: #81a1c1;
+}
+
+.spotlight-theme-nord .spotlight-entry {
+  color: #eceff4;
+  caret-color: #eceff4;
+  selection-background-color: #88c0d0;
+}
+
+.spotlight-theme-nord .spotlight-entry StLabel.hint-text {
+  color: rgba(236, 239, 244, 0.35);
+}
+
+.spotlight-theme-nord .spotlight-result {
+  color: #eceff4;
+}
+
+.spotlight-theme-nord .spotlight-result:hover,
+.spotlight-theme-nord .spotlight-result:focus,
+.spotlight-theme-nord .spotlight-result.spotlight-selected {
+  background-color: #3b4252;
+  color: #eceff4;
+}
+
+.spotlight-theme-nord .spotlight-result-description {
+  color: #81a1c1;
+}
+
+.spotlight-theme-nord .spotlight-result:hover .spotlight-result-description,
+.spotlight-theme-nord .spotlight-result:focus .spotlight-result-description,
+.spotlight-theme-nord .spotlight-result.spotlight-selected .spotlight-result-description {
+  color: #d8dee9;
+}
+
+.spotlight-theme-nord .spotlight-no-results {
+  color: #81a1c1;
+}
+
+.spotlight-theme-nord .spotlight-no-results-title {
+  color: #eceff4;
+}
+
+/* ---------- dracula ---------- */
+.spotlight-container.spotlight-theme-dracula {
+  background-color: #282a36;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.spotlight-theme-dracula .spotlight-search-icon {
+  color: #6272a4;
+}
+
+.spotlight-theme-dracula .spotlight-entry {
+  color: #f8f8f2;
+  caret-color: #f8f8f2;
+  selection-background-color: #bd93f9;
+}
+
+.spotlight-theme-dracula .spotlight-entry StLabel.hint-text {
+  color: rgba(248, 248, 242, 0.35);
+}
+
+.spotlight-theme-dracula .spotlight-result {
+  color: #f8f8f2;
+}
+
+.spotlight-theme-dracula .spotlight-result:hover,
+.spotlight-theme-dracula .spotlight-result:focus,
+.spotlight-theme-dracula .spotlight-result.spotlight-selected {
+  background-color: #44475a;
+  color: #f8f8f2;
+}
+
+.spotlight-theme-dracula .spotlight-result-description {
+  color: #6272a4;
+}
+
+.spotlight-theme-dracula .spotlight-result:hover .spotlight-result-description,
+.spotlight-theme-dracula .spotlight-result:focus .spotlight-result-description,
+.spotlight-theme-dracula .spotlight-result.spotlight-selected .spotlight-result-description {
+  color: #bd93f9;
+}
+
+.spotlight-theme-dracula .spotlight-no-results {
+  color: #6272a4;
+}
+
+.spotlight-theme-dracula .spotlight-no-results-title {
+  color: #f8f8f2;
+}
+
+/* ---------- one dark ---------- */
+.spotlight-container.spotlight-theme-one-dark {
+  background-color: #282c34;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.spotlight-theme-one-dark .spotlight-search-icon {
+  color: #5c6370;
+}
+
+.spotlight-theme-one-dark .spotlight-entry {
+  color: #abb2bf;
+  caret-color: #e6e6e6;
+  selection-background-color: #61afef;
+}
+
+.spotlight-theme-one-dark .spotlight-entry StLabel.hint-text {
+  color: rgba(171, 178, 191, 0.35);
+}
+
+.spotlight-theme-one-dark .spotlight-result {
+  color: #abb2bf;
+}
+
+.spotlight-theme-one-dark .spotlight-result:hover,
+.spotlight-theme-one-dark .spotlight-result:focus,
+.spotlight-theme-one-dark .spotlight-result.spotlight-selected {
+  background-color: #3b4048;
+  color: #e6e6e6;
+}
+
+.spotlight-theme-one-dark .spotlight-result-description {
+  color: #5c6370;
+}
+
+.spotlight-theme-one-dark .spotlight-result:hover .spotlight-result-description,
+.spotlight-theme-one-dark .spotlight-result:focus .spotlight-result-description,
+.spotlight-theme-one-dark .spotlight-result.spotlight-selected .spotlight-result-description {
+  color: #98a0aa;
+}
+
+.spotlight-theme-one-dark .spotlight-no-results {
+  color: #5c6370;
+}
+
+.spotlight-theme-one-dark .spotlight-no-results-title {
+  color: #abb2bf;
+}
+
+/* ---------- solarized light ---------- */
+.spotlight-container.spotlight-theme-solarized-light {
+  background-color: #fdf6e3;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+.spotlight-theme-solarized-light .spotlight-search-icon {
+  color: #93a1a1;
+}
+
+.spotlight-theme-solarized-light .spotlight-entry {
+  color: #586e75;
+  caret-color: #657b83;
+  selection-background-color: #268bd2;
+}
+
+.spotlight-theme-solarized-light .spotlight-entry StLabel.hint-text {
+  color: rgba(88, 110, 117, 0.35);
+}
+
+.spotlight-theme-solarized-light .spotlight-result {
+  color: #586e75;
+}
+
+.spotlight-theme-solarized-light .spotlight-result:hover,
+.spotlight-theme-solarized-light .spotlight-result:focus,
+.spotlight-theme-solarized-light .spotlight-result.spotlight-selected {
+  background-color: #eee8d5;
+  color: #073642;
+}
+
+.spotlight-theme-solarized-light .spotlight-result-description {
+  color: #93a1a1;
+}
+
+.spotlight-theme-solarized-light .spotlight-result:hover .spotlight-result-description,
+.spotlight-theme-solarized-light .spotlight-result:focus .spotlight-result-description,
+.spotlight-theme-solarized-light .spotlight-result.spotlight-selected .spotlight-result-description {
+  color: #586e75;
+}
+
+.spotlight-theme-solarized-light .spotlight-no-results {
+  color: #93a1a1;
+}
+
+.spotlight-theme-solarized-light .spotlight-no-results-title {
+  color: #586e75;
+}
