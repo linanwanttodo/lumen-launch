@@ -4,10 +4,10 @@
 import {ExtensionPreferences} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 import Adw from 'gi://Adw';
 
-import {buildShortcutPage} from './prefs/shortcutPage.js';
-import {buildAppearancePage} from './prefs/appearancePage.js';
-import {buildWebSearchPage} from './prefs/webSearchPage.js';
-import {buildAboutPage} from './prefs/aboutPage.js';
+import {buildShortcutPage} from './src/prefs/shortcutPage.js';
+import {buildAppearancePage} from './src/prefs/appearancePage.js';
+import {buildWebSearchPage} from './src/prefs/webSearchPage.js';
+import {buildAboutPage} from './src/prefs/aboutPage.js';
 
 export default class SpotlightPreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {

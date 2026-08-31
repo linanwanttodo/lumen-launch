@@ -4,10 +4,13 @@
 import St from 'gi://St';
 import Clutter from 'gi://Clutter';
 
-// builds a single result row with icon title and click/hover handling
+// builds a single result row with icon title and click/hover handling.
+// the extra spotlight-result-row class carries the row's inset margins
+// (grid tiles reuse .spotlight-result for their hover colors and must not
+// inherit the row margins)
 export function buildResultRow(result, resultIndex, onActivate, onHover) {
     const hbox = new St.BoxLayout({
-        style_class: 'spotlight-result',
+        style_class: 'spotlight-result spotlight-result-row',
         vertical: false,
         reactive: true,
         can_focus: true,

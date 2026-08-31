@@ -1,20 +1,14 @@
 #!/usr/bin/env python3
-# Regenerate locale/zh_CN/LC_MESSAGES/spotlight.mo from po/zh_CN.po
+# Regenerate locale/<lang>/LC_MESSAGES/lumen-launch.mo from po/<lang>.po
 # The system has no msgfmt/xgettext (gettext package is purged), so we build
 # the .mo binary by hand. Runs standalone; validates with Python gettext.
+# Usage: genmo.py [lang ...]   (default: zh_CN)
 import os
 import re
 import struct
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PO = os.path.join(HERE, '..', 'po', 'zh_CN.po')
-OUT = os.path.join(HERE, '..', 'locale', 'zh_CN', 'LC_MESSAGES', 'lumen-launch.mo')
-
-STANDARD_HEADER = (b'Project-Id-Version: spotlight\nMIME-Version: 1.0\n'
-                   b'Content-Type: text/plain; charset=UTF-8\n'
-                   b'Content-Transfer-Encoding: 8bit\n'
-                   b'Plural-Forms: nplurals=1; plural=0;\nLanguage: zh_CN\n')
 
 
 def unquote(s):
@@ -26,8 +20,16 @@ def unquote(s):
                .replace(b'\\\\', b'\\'))
 
 
-def main():
-    with open(PO, encoding='utf-8') as f:
+def build(lang):
+    po = os.path.join(HERE, '..', 'po', f'{lang}.po')
+    out = os.path.join(HERE, '..', 'locale', lang, 'LC_MESSAGES', 'lumen-launch.mo')
+    header = (b'Project-Id-Version: spotlight\nMIME-Version: 1.0\n'
+              b'Content-Type: text/plain; charset=UTF-8\n'
+              b'Content-Transfer-Encoding: 8bit\n'
+              b'Plural-Forms: nplurals=1; plural=0;\n'
+              + b'Language: ' + lang.encode() + b'\n')
+
+    with open(po, encoding='utf-8') as f:
         content = f.read()
 
     blocks = re.findall(
@@ -36,7 +38,7 @@ def main():
 
     entries = [(unquote(m), unquote(s)) for m, s in blocks]
     entries.sort(key=lambda e: e[0])
-    entries = [(b'', STANDARD_HEADER)] + [e for e in entries if e[0] != b'']
+    entries = [(b'', header)] + [e for e in entries if e[0] != b'']
 
     n = len(entries)
     o_table = 28
@@ -54,15 +56,21 @@ def main():
         t_pairs += struct.pack('<II', len(v), translations_start + len(translations))
         translations += v + b'\0'
 
-    os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    with open(OUT, 'wb') as f:
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    with open(out, 'wb') as f:
         f.write(struct.pack('<IIIIIII', 0x950412de, 0, n, o_table, t_table, 0, 0))
         f.write(o_pairs)
         f.write(t_pairs)
         f.write(originals)
         f.write(translations)
 
-    print(f"wrote {n} entries to {OUT} ({os.path.getsize(OUT)} bytes)")
+    print(f"wrote {n} entries to {out} ({os.path.getsize(out)} bytes)")
+
+
+def main():
+    langs = sys.argv[1:] or ['zh_CN']
+    for lang in langs:
+        build(lang)
 
 
 if __name__ == '__main__':

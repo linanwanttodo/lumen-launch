@@ -7,11 +7,22 @@ import {searchSystemActions} from './systemActionsSearch.js';
 import {searchSettings} from './settingsSearch.js';
 import {searchWeb} from './webSearch.js';
 
+// practical ceiling used when the setting is 0 ("All"): every realistic
+// match is shown, and a runaway query still can't build millions of widgets
+export const MAX_RESULTS_ALL = 1000;
+
+// resolves the max-results setting: 0 (the "All" choice in prefs) means
+// show every match, scrollable; any other value caps each category
+export function maxResultsFor(settings) {
+    const n = settings.get_int('max-results');
+    return n > 0 ? n : MAX_RESULTS_ALL;
+}
+
 // orchestrates all search providers and combines results in priority order
 // priority: apps first then calculator then system actions then settings then web last
 export function runSearch(text, settings) {
     const trimmed = text.trim();
-    const maxResults = settings.get_int('max-results');
+    const maxResults = maxResultsFor(settings);
     const allResults = [];
 
     allResults.push(...searchApps(trimmed, maxResults));

@@ -61,12 +61,97 @@
   box-shadow: none;
 }
 
-/* single result row - rounded highlight bar like Ulauncher */
+/* thin separator line between search entry and results */
+.spotlight-divider {
+  height: 1px;
+  margin: 3px 12px 1px 12px;
+}
+
+/* grid layout - exactly 4 full rows of tiles visible before scrolling:
+   tile height is fixed at 96px below, so row pitch = 96 + 8 margin = 104,
+   4 rows = 416, + 4 top + 8 bottom padding = 428. no half row peeks at
+   rest, so a hovered tile's rounded highlight is never sliced by the
+   viewport edge */
+.spotlight-results.spotlight-results-grid {
+  max-height: 428px;
+  /* horizontal breathing room so the last tile column never touches the
+     card edge (grid only; list rows keep their own padding) */
+  padding: 4px 8px 8px 8px;
+}
+
+/* one horizontal strip of tiles in grid layout; the 24px spacing is the gap
+   between tile highlight boxes, so hovering one tile never shades neighbours */
+.spotlight-grid-row {
+  spacing: 24px;
+  margin: 4px 0;
+}
+
+/* thin overlay-style scrollbar (macOS-like) for both list and grid layouts:
+   transparent trough, 3px rounded handle hugging the right card edge */
+.spotlight-results StScrollBar {
+  padding: 2px 3px 2px 0;
+}
+
+.spotlight-results StScrollBar StBin#trough {
+  background-color: transparent;
+  border: none;
+  min-width: 3px;
+}
+
+.spotlight-results StScrollBar StButton#vhandle {
+  min-width: 3px;
+  padding: 0;
+  border: none;
+  border-radius: 2px;
+  background-color: rgba(142, 142, 147, 0.5);
+}
+
+.spotlight-results StScrollBar StButton#vhandle:hover {
+  background-color: rgba(142, 142, 147, 0.85);
+}
+
+/* grid tile - icon on top, label below, launchpad style; keeps the */
+/* spotlight-result class so per-theme hover/selected colors apply.
+   compound selector so the tile rules win over the later .spotlight-result.
+   FIXED height keeps the 4-row viewport math exact (see .spotlight-results-grid).
+   NO transition-duration here on purpose: with one, the highlight fades out
+   for a moment after the pointer leaves, so sweeping across the grid leaves
+   several neighbouring tiles glowing at once */
+.spotlight-result.spotlight-result-tile {
+  height: 96px;
+  padding: 12px 4px 10px 4px;
+  border-radius: 12px;
+  spacing: 2px;
+}
+
+.spotlight-tile-icon {
+  margin-bottom: 8px;
+}
+
+.spotlight-tile-label {
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  padding: 0 2px;
+}
+
+/* single result row - rounded highlight bar like Ulauncher.
+   rows get their own inset margins (spotlight-result-row) so consecutive
+   highlight bars are separated from each other and from the card edges.
+   NO transition-duration here on purpose: with one, the highlight fades out
+   for a moment after the pointer leaves, so sweeping the pointer across the
+   list leaves a trail of glowing rows that looks like the neighbours are
+   highlighted too */
 .spotlight-result {
   padding: 8px 12px;
   border-radius: 12px;
-  transition-duration: 100ms;
   spacing: 12px;
+}
+
+/* list-row-only inset; grid tiles carry .spotlight-result too and must not
+   get these margins (they have hard fixed widths inside a spaced strip) */
+.spotlight-result-row {
+  margin: 2px 6px;
 }
 
 .spotlight-result-icon {
@@ -153,6 +238,10 @@
   color: #98989d;
 }
 
+.spotlight-theme-dark .spotlight-divider {
+  background-color: rgba(255, 255, 255, 0.10);
+}
+
 .spotlight-theme-dark .spotlight-no-results-title {
   color: #f5f5f7;
 }
@@ -200,6 +289,10 @@
 
 .spotlight-theme-light .spotlight-no-results {
   color: #86868b;
+}
+
+.spotlight-theme-light .spotlight-divider {
+  background-color: rgba(0, 0, 0, 0.10);
 }
 
 .spotlight-theme-light .spotlight-no-results-title {
@@ -251,6 +344,10 @@
   color: #81a1c1;
 }
 
+.spotlight-theme-nord .spotlight-divider {
+  background-color: rgba(216, 222, 233, 0.15);
+}
+
 .spotlight-theme-nord .spotlight-no-results-title {
   color: #eceff4;
 }
@@ -298,6 +395,10 @@
 
 .spotlight-theme-dracula .spotlight-no-results {
   color: #6272a4;
+}
+
+.spotlight-theme-dracula .spotlight-divider {
+  background-color: rgba(248, 248, 242, 0.12);
 }
 
 .spotlight-theme-dracula .spotlight-no-results-title {
@@ -349,6 +450,10 @@
   color: #5c6370;
 }
 
+.spotlight-theme-one-dark .spotlight-divider {
+  background-color: rgba(171, 178, 191, 0.15);
+}
+
 .spotlight-theme-one-dark .spotlight-no-results-title {
   color: #abb2bf;
 }
@@ -396,6 +501,10 @@
 
 .spotlight-theme-solarized-light .spotlight-no-results {
   color: #93a1a1;
+}
+
+.spotlight-theme-solarized-light .spotlight-divider {
+  background-color: rgba(7, 54, 66, 0.15);
 }
 
 .spotlight-theme-solarized-light .spotlight-no-results-title {

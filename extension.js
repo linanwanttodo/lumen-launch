@@ -3,8 +3,8 @@
 
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-import {SpotlightPopup} from './spotlightPopup.js';
-import {KeybindingManager} from './keybinding.js';
+import {SpotlightPopup} from './src/popup/spotlightPopup.js';
+import {KeybindingManager} from './src/keybinding.js';
 
 // entry point - enable and disable are kept next to each other for easy review
 export default class SpotlightExtension extends Extension {

@@ -16,6 +16,9 @@ msgstr "About"
 msgid "Accessibility"
 msgstr "Accessibility"
 
+msgid "All"
+msgstr "All"
+
 msgid "Appearance"
 msgstr "Appearance"
 
@@ -49,6 +52,12 @@ msgstr "Files"
 msgid "GitHub repository"
 msgstr "GitHub repository"
 
+msgid "Grid"
+msgstr "Grid"
+
+msgid "How many results each category shows"
+msgstr "How many results each category shows"
+
 msgid "Folder · %s"
 msgstr "Folder · %s"
 
@@ -60,6 +69,12 @@ msgstr "Keyboard"
 
 msgid "Keyboard Shortcut"
 msgstr "Keyboard Shortcut"
+
+msgid "List"
+msgstr "List"
+
+msgid "List rows or an icon grid (Launchpad style)"
+msgstr "List rows or an icon grid (Launchpad style)"
 
 msgid "Lock Screen"
 msgstr "Lock Screen"
@@ -129,6 +144,9 @@ msgstr "Restart"
 
 msgid "Results"
 msgstr "Results"
+
+msgid "Results layout"
+msgstr "Results layout"
 
 msgid "Search"
 msgstr "Search"

@@ -13,6 +13,9 @@ msgstr "关于"
 msgid "Accessibility"
 msgstr "无障碍"
 
+msgid "All"
+msgstr "全部"
+
 msgid "Appearance"
 msgstr "外观"
 
@@ -46,6 +49,12 @@ msgstr "文件"
 msgid "GitHub repository"
 msgstr "GitHub 仓库"
 
+msgid "Grid"
+msgstr "网格"
+
+msgid "How many results each category shows"
+msgstr "每类结果显示的数量"
+
 msgid "Folder · %s"
 msgstr "文件夹 · %s"
 
@@ -57,6 +66,12 @@ msgstr "键盘"
 
 msgid "Keyboard Shortcut"
 msgstr "键盘快捷键"
+
+msgid "List"
+msgstr "列表"
+
+msgid "List rows or an icon grid (Launchpad style)"
+msgstr "列表行或图标网格（启动台样式）"
 
 msgid "Lock Screen"
 msgstr "锁定屏幕"
@@ -129,6 +144,9 @@ msgstr "重启"
 
 msgid "Results"
 msgstr "结果"
+
+msgid "Results layout"
+msgstr "结果布局"
 
 msgid "Search"
 msgstr "搜索"

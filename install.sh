@@ -69,7 +69,7 @@ install() {
 
     cp -r "$SRC" "$DEST"
     rm -rf "$DEST/.git"
-    rm -rf "$DEST/tools" "$DEST/po" "$DEST/install.sh"
+    rm -rf "$DEST/.vscode" "$DEST/tools" "$DEST/po" "$DEST/install.sh"
     rm -f "$DEST/schemas/gschemas.compiled"
 
     glib-compile-schemas "$DEST/schemas"

@@ -68,26 +68,41 @@ export function searchApps(query, maxResults) {
     }));
 }
 
-// returns the most frequently used apps, used for the empty-query state
-// (rofi-style: show a row of commonly used apps when nothing is typed yet)
-export function getMostUsedApps(maxResults) {
+// returns ALL installed apps, most-used first, used for the empty-query
+// state in both layouts (launchpad style: the full app grid until you type).
+// dedupes by base name exactly like searchApps does
+export function getAllApps() {
     const appSystem = Shell.AppSystem.get_default();
-    const mostUsed = Shell.AppUsage.get_default().get_most_used();
+    const appUsage = Shell.AppUsage.get_default();
+    const seenNames = new Set();
+    const apps = [];
 
-    return mostUsed
-        .filter(app => app && app.get_id())
-        .slice(0, maxResults)
-        .map(app => ({
-            type: 'app',
-            title: app.get_name(),
-            app,
-            appId: app.get_id(),
-            activate: () => {
-                const shellApp = appSystem.lookup_app(app.get_id());
-                if (shellApp)
-                    shellApp.activate();
-                else
-                    app.launch([], null);
-            },
-        }));
+    for (const app of appSystem.get_installed()) {
+        const name = app.get_name() || '';
+        const baseName = name.toLowerCase()
+            .replace(/[\s-]+(esr|beta|nightly|dev|canary|stable|preview)$/, '')
+            .trim();
+        if (seenNames.has(baseName))
+            continue;
+        seenNames.add(baseName);
+        apps.push(app);
+    }
+
+    // same convention as searchApps' tie-breaker: compare() orders the
+    // more-used app first
+    apps.sort((a, b) => appUsage.compare(a.get_id(), b.get_id()));
+
+    return apps.map(app => ({
+        type: 'app',
+        title: app.get_name(),
+        app,
+        appId: app.get_id(),
+        activate: () => {
+            const shellApp = appSystem.lookup_app(app.get_id());
+            if (shellApp)
+                shellApp.activate();
+            else
+                app.launch([], null);
+        },
+    }));
 }

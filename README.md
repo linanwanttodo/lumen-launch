@@ -20,7 +20,8 @@ ctrl + space
 ## features
 
 - **fuzzy app search** — type an app name or abbreviation, `ffx` finds Firefox
-- **most-used apps** — when the search box is empty, shows your most-used apps (rofi style)
+- **two result layouts** — classic list rows or an icon grid (5x4, Launchpad style), switchable in Preferences → Appearance
+- **all apps** — when the search box is empty, shows every installed app, most-used first
 - **6 color themes** — Dark, Light, Nord, Dracula, One Dark, Solarized Light, switchable in preferences
 - **inline calculator** — type `12 * 8 + 3`, press Enter to copy the result to the clipboard
 - **system actions** — lock, suspend, restart, shutdown, logout, switch user
@@ -106,18 +107,23 @@ you can change
 
 - the keyboard shortcut
 - the color theme
+- the results layout (list or icon grid)
 - popup width
-- max results per category
+- max results per category (All, or a fixed number)
 - web search engine
 - toggle web search on or off
 
 ## architecture
 
-the codebase is modular javascript files at the root level for the shell process
-plus files inside `prefs/` for the preferences process (they run in a separate
-GTK process and must not import shell-only libraries like St, Clutter, Meta or Shell).
-The flat root structure is required by the GNOME extensions website, which looks
-for `extension.js` at the root of the zip.
+`extension.js` and `prefs.js` stay at the repo root - GNOME Shell (and the
+extensions website zip upload) requires them there. the implementation lives
+under `src/`:
+
+- `src/popup/` - popup widgets (shell process)
+- `src/search/` - search providers and matching (shell process)
+- `src/keybinding.js` - keybinding manager
+- `src/prefs/` - preferences pages (they run in a separate GTK process and
+  must not import shell-only libraries like St, Clutter, Meta or Shell)
 
 each file has a single responsibility
 
@@ -125,31 +131,32 @@ each file has a single responsibility
 |---|---|
 | `extension.js` | entry point, creates popup and registers keybinding |
 | `prefs.js` | preferences window entry point |
-| `spotlightPopup.js` | main popup widget: open/close, search, rendering, theme, centering |
-| `searchEntry.js` | search entry with magnifying glass icon |
-| `resultsContainer.js` | scrollable results area |
-| `resultRow.js` | builds a single result row with icon and text |
-| `noResults.js` | empty state widget |
-| `appSearch.js` | fuzzy app search + most-used apps via Shell.AppSystem/AppUsage |
-| `fileSearch.js` | home-directory file and folder search |
-| `calculatorSearch.js` | arithmetic evaluation and clipboard copy |
-| `systemActionsSearch.js` | system actions via the Shell SystemActions singleton |
-| `settingsSearch.js` | GNOME settings panel search (bilingual) |
-| `webSearch.js` | web search fallback |
-| `searchController.js` | orchestrates all search providers and combines results |
-| `keybinding.js` | keybinding manager using Mutter `grab_accelerator` (works in any app) |
-| `calculator.js` | recursive descent arithmetic parser |
-| `fuzzyMatcher.js` | fuzzy string matching with scoring |
-| `prefs/shortcutPage.js` | keyboard shortcut capture |
-| `prefs/appearancePage.js` | theme, popup width, max results |
-| `prefs/webSearchPage.js` | search engine picker |
-| `prefs/aboutPage.js` | about section |
+| `src/popup/spotlightPopup.js` | main popup widget: open/close, search, rendering, theme, centering |
+| `src/popup/searchEntry.js` | search entry with magnifying glass icon |
+| `src/popup/resultsContainer.js` | scrollable results area |
+| `src/popup/resultRow.js` | builds a single result row with icon and text |
+| `src/popup/resultTile.js` | builds a single grid tile (icon + label) for the grid layout |
+| `src/popup/noResults.js` | empty state widget |
+| `src/search/appSearch.js` | fuzzy app search + full app list (most-used first) via Shell.AppSystem/AppUsage |
+| `src/search/fileSearch.js` | home-directory file and folder search |
+| `src/search/calculatorSearch.js` | arithmetic evaluation and clipboard copy |
+| `src/search/systemActionsSearch.js` | system actions via the Shell SystemActions singleton |
+| `src/search/settingsSearch.js` | GNOME settings panel search (bilingual) |
+| `src/search/webSearch.js` | web search fallback |
+| `src/search/searchController.js` | orchestrates all search providers and combines results |
+| `src/search/calculator.js` | recursive descent arithmetic parser |
+| `src/search/fuzzyMatcher.js` | fuzzy string matching with scoring |
+| `src/keybinding.js` | keybinding manager using Mutter `grab_accelerator` (works in any app) |
+| `src/prefs/shortcutPage.js` | keyboard shortcut capture |
+| `src/prefs/appearancePage.js` | theme, results layout, popup width, max results |
+| `src/prefs/webSearchPage.js` | search engine picker |
+| `src/prefs/aboutPage.js` | about section |
 
 ## design
 
 - single rounded card like Ulauncher: container draws background + radius + shadow,
   entry and results are transparent and seamless
-- no blur, no backdrop, no border line
+- all themes are plain solid rounded cards (no backdrop blur)
 - fixed height of 5 result rows, scrolls beyond that
 - always centered on the primary monitor
 - 600px wide by default
