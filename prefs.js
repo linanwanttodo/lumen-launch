@@ -14,7 +14,7 @@ export default class SpotlightPreferences extends ExtensionPreferences {
         const settings = this.getSettings();
 
         const page = new Adw.PreferencesPage({
-            title: 'Spotlight',
+            title: 'Lumen launch',
             icon_name: 'system-search-symbolic',
         });
 

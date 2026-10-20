@@ -18,7 +18,7 @@ const SEARCH_ENGINES = [
 export function buildWebSearchPage(settings) {
     const group = new Adw.PreferencesGroup({
         title: _('Web Search'),
-        description: _('Web search only appears when no apps or settings match'),
+        description: _('Web search only appears when no local results match'),
     });
 
     const webSearchRow = new Adw.SwitchRow({

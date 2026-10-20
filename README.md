@@ -11,7 +11,7 @@ A compact launcher for GNOME Shell 50, inspired by macOS Spotlight.
 > below.
 
 **repo:** https://github.com/linanwanttodo/lumen-launch
-**version:** 30.7.2026
+**version:** 20.10.2026
 
 ## shortcut
 
@@ -20,12 +20,13 @@ ctrl + space
 ## features
 
 - **fuzzy app search** — type an app name or abbreviation, `ffx` finds Firefox
-- **two result layouts** — classic list rows or an icon grid (5x4, Launchpad style), switchable in Preferences → Appearance
+- **two result layouts** — classic list rows or an icon grid (5x4 at the default width, up to 9 columns as the popup widens), switchable in Preferences → Appearance
 - **all apps** — when the search box is empty, shows every installed app, most-used first
 - **6 color themes** — Dark, Light, Nord, Dracula, One Dark, Solarized Light, switchable in preferences
 - **inline calculator** — type `12 * 8 + 3`, press Enter to copy the result to the clipboard
 - **system actions** — lock, suspend, restart, shutdown, logout, switch user
 - **settings search** — type `wifi`, `bluetooth`, `display` … to jump straight to that GNOME settings panel (matches English and Chinese panel names)
+- **file and folder search** — searches Desktop, Documents, Downloads, Pictures, Music, Videos, and Templates; results are ranked by filename match
 - **web search fallback** — only when nothing else matches (Google / DuckDuckGo / Brave / Bing / Startpage)
 - **Chinese input support** — works with fcitx5/IBus preedit in the search box
 - always opens centered on the primary monitor
@@ -136,6 +137,7 @@ each file has a single responsibility
 | `src/popup/resultsContainer.js` | scrollable results area |
 | `src/popup/resultRow.js` | builds a single result row with icon and text |
 | `src/popup/resultTile.js` | builds a single grid tile (icon + label) for the grid layout |
+| `src/popup/gridLayout.js` | pure grid geometry: column count, tile width, whole-row viewport height |
 | `src/popup/noResults.js` | empty state widget |
 | `src/search/appSearch.js` | fuzzy app search + full app list (most-used first) via Shell.AppSystem/AppUsage |
 | `src/search/fileSearch.js` | home-directory file and folder search |
@@ -157,7 +159,7 @@ each file has a single responsibility
 - single rounded card like Ulauncher: container draws background + radius + shadow,
   entry and results are transparent and seamless
 - all themes are plain solid rounded cards (no backdrop blur)
-- fixed height of 5 result rows, scrolls beyond that
+- list view shows 5 whole rows, grid view shows up to 4 whole rows; the viewport is sized to whole rows and scrolls beyond that
 - always centered on the primary monitor
 - 600px wide by default
 
@@ -175,6 +177,13 @@ extension**:
 
 If you came from the old Spotlight extension: your popup layout and core search
 behaviour are unchanged — the new name and themes are additions, not a rewrite.
+
+## data access
+
+To find files, the extension reads filenames and file types under the standard
+user directories listed above. It never reads file contents, and it makes no
+network requests except when you activate a web search result or open an
+online link. The only clipboard access is the user-initiated calculator copy.
 
 ## license
 

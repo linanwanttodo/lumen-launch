@@ -10,7 +10,7 @@ import {gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions
 export function buildShortcutPage(settings) {
     const group = new Adw.PreferencesGroup({
         title: _('Keyboard Shortcut'),
-        description: _('Set the shortcut to open Spotlight'),
+        description: _('Set the shortcut to open Lumen launch'),
     });
 
     const shortcutRow = new Adw.ActionRow({
@@ -48,6 +48,13 @@ export function buildShortcutPage(settings) {
         if (!capturing)
             return false;
 
+        if (keyval === Gdk.KEY_Escape) {
+            // Escape cancels capture instead of becoming the shortcut.
+            capturing = false;
+            shortcutLabel.label = formatShortcut(settings.get_strv('toggle-shortcut'));
+            return true;
+        }
+
         if (MODIFIER_KEYS.has(keyval)) {
             shortcutLabel.label = `${Gdk.keyval_name(keyval)}+`;
             return true;
@@ -62,7 +69,13 @@ export function buildShortcutPage(settings) {
             accelerator += '<Shift>';
         if (state & Gdk.ModifierType.ALT_MASK)
             accelerator += '<Alt>';
-        accelerator += Gdk.keyval_name(keyval);
+
+        // Shift+a reports the keyval as "A"; accelerators expect the
+        // unshifted key name and express Shift through the modifier list.
+        let keyName = Gdk.keyval_name(keyval);
+        if (keyName.length === 1 && keyName >= 'A' && keyName <= 'Z')
+            keyName = keyName.toLowerCase();
+        accelerator += keyName;
 
         settings.set_strv('toggle-shortcut', [accelerator]);
         shortcutLabel.label = formatShortcut([accelerator]);

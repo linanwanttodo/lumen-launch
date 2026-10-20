@@ -1,18 +1,19 @@
-// spotlight - app search provider
+// lumen launch - app search provider
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import Shell from 'gi://Shell';
 import {fuzzyScore} from './fuzzyMatcher.js';
 
-// searches installed apps using shell appsystem
-// uses fuzzy matching so ffx matches firefox
-// dedupes by base name so firefox and firefox esr don't both show
-// sorts by fuzzy match score then by usage frequency
+// Searches installed apps using the shell app system.
+// Uses fuzzy matching so ffx matches firefox.
+// Groups variants by base name (Firefox, Firefox ESR) and keeps the
+// best-scored variant instead of whichever one happens to be enumerated
+// first; usage frequency breaks ties.
 export function searchApps(query, maxResults) {
     const appSystem = Shell.AppSystem.get_default();
     const allApps = appSystem.get_installed();
-    const seenNames = new Set();
-    const scored = [];
+    const appUsage = Shell.AppUsage.get_default();
+    const bestByName = new Map();
 
     for (const app of allApps) {
         const name = app.get_name() || '';
@@ -22,7 +23,6 @@ export function searchApps(query, maxResults) {
         const idScore = fuzzyScore(query, id.replace('.desktop', ''));
 
         // -1 means no match - only skip if both scores are -1
-        // otherwise take the score that actually matched (not -1)
         let bestScore;
         if (nameScore < 0 && idScore < 0)
             continue;
@@ -33,23 +33,28 @@ export function searchApps(query, maxResults) {
         else
             bestScore = Math.min(nameScore, idScore);
 
-        // strip a known trailing variant suffix (e.g. "Firefox ESR" -> "firefox")
-        // rather than splitting on any hyphen, which would also wrongly
-        // truncate apps whose real name contains one, like "GNOME-Builder"
+        // Strip a known trailing variant suffix (e.g. "Firefox ESR" ->
+        // "firefox") rather than splitting on any hyphen, which would also
+        // wrongly truncate apps whose real name contains one, like
+        // "GNOME-Builder".
         const baseName = name.toLowerCase()
             .replace(/[\s-]+(esr|beta|nightly|dev|canary|stable|preview)$/, '')
             .trim();
-        if (seenNames.has(baseName))
-            continue;
-        seenNames.add(baseName);
 
-        scored.push({app, appId: id, title: name, score: bestScore});
+        const candidate = {app, appId: id, title: name, score: bestScore};
+        const existing = bestByName.get(baseName);
+        if (!existing ||
+            candidate.score < existing.score ||
+            (candidate.score === existing.score &&
+             appUsage.compare(candidate.appId, existing.appId) < 0)) {
+            bestByName.set(baseName, candidate);
+        }
     }
 
+    const scored = [...bestByName.values()];
     scored.sort((a, b) => {
         if (a.score !== b.score)
             return a.score - b.score;
-        const appUsage = Shell.AppUsage.get_default();
         return appUsage.compare(a.appId, b.appId);
     });
 
@@ -68,28 +73,27 @@ export function searchApps(query, maxResults) {
     }));
 }
 
-// returns ALL installed apps, most-used first, used for the empty-query
+// Returns ALL installed apps, most-used first, used for the empty-query
 // state in both layouts (launchpad style: the full app grid until you type).
-// dedupes by base name exactly like searchApps does
+// Groups variants by base name and keeps the most-used variant.
 export function getAllApps() {
     const appSystem = Shell.AppSystem.get_default();
     const appUsage = Shell.AppUsage.get_default();
-    const seenNames = new Set();
-    const apps = [];
+    const bestByName = new Map();
 
     for (const app of appSystem.get_installed()) {
         const name = app.get_name() || '';
         const baseName = name.toLowerCase()
             .replace(/[\s-]+(esr|beta|nightly|dev|canary|stable|preview)$/, '')
             .trim();
-        if (seenNames.has(baseName))
-            continue;
-        seenNames.add(baseName);
-        apps.push(app);
+
+        const existing = bestByName.get(baseName);
+        if (!existing || appUsage.compare(app.get_id(), existing.get_id()) < 0)
+            bestByName.set(baseName, app);
     }
 
-    // same convention as searchApps' tie-breaker: compare() orders the
-    // more-used app first
+    const apps = [...bestByName.values()];
+    // compare() orders the more-used app first
     apps.sort((a, b) => appUsage.compare(a.get_id(), b.get_id()));
 
     return apps.map(app => ({

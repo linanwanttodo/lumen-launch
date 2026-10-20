@@ -34,6 +34,12 @@ msgstr "Bluetooth"
 msgid "Calculator"
 msgstr "Calculator"
 
+msgid "Cannot divide by zero"
+msgstr "Cannot divide by zero"
+
+msgid "Check the expression"
+msgstr "Check the expression"
+
 msgid "Click here, then press a key combination"
 msgstr "Click here, then press a key combination"
 
@@ -106,6 +112,9 @@ msgstr "Notifications"
 msgid "Online Accounts"
 msgstr "Online Accounts"
 
+msgid "Open %s in your browser"
+msgstr "Open %s in your browser"
+
 msgid "Theme"
 msgstr "Theme"
 
@@ -154,14 +163,17 @@ msgstr "Search"
 msgid "Search apps..."
 msgstr "Search apps..."
 
+msgid "Search the web for \"%s\""
+msgstr "Search the web for \"%s\""
+
 msgid "Search engine"
 msgstr "Search engine"
 
 msgid "Set shortcut to Ctrl+Space"
 msgstr "Set shortcut to Ctrl+Space"
 
-msgid "Set the shortcut to open Spotlight"
-msgstr "Set the shortcut to open Spotlight"
+msgid "Set the shortcut to open Lumen launch"
+msgstr "Set the shortcut to open Lumen launch"
 
 msgid "Settings"
 msgstr "Settings"
@@ -199,8 +211,8 @@ msgstr "Users"
 msgid "Web Search"
 msgstr "Web Search"
 
-msgid "Web search only appears when no apps or settings match"
-msgstr "Web search only appears when no apps or settings match"
+msgid "Web search only appears when no local results match"
+msgstr "Web search only appears when no local results match"
 
 msgid "Wi-Fi"
 msgstr "Wi-Fi"

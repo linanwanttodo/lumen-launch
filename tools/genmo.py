@@ -23,7 +23,7 @@ def unquote(s):
 def build(lang):
     po = os.path.join(HERE, '..', 'po', f'{lang}.po')
     out = os.path.join(HERE, '..', 'locale', lang, 'LC_MESSAGES', 'lumen-launch.mo')
-    header = (b'Project-Id-Version: spotlight\nMIME-Version: 1.0\n'
+    header = (b'Project-Id-Version: lumen launch\nMIME-Version: 1.0\n'
               b'Content-Type: text/plain; charset=UTF-8\n'
               b'Content-Transfer-Encoding: 8bit\n'
               b'Plural-Forms: nplurals=1; plural=0;\n'

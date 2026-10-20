@@ -12,7 +12,7 @@
       <default>600</default>
       <range min="400" max="1200"/>
       <summary>Popup width</summary>
-      <description>Width of the Spotlight popup in pixels.</description>
+      <description>Width of the Lumen launch popup in pixels.</description>
     </key>
 
     <key name="max-results" type="i">

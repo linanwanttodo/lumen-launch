@@ -25,6 +25,17 @@ export function buildSearchEntry() {
         x_expand: true,
     });
 
+    // Some shell themes (Yaru does) paint a focus ring on every StEntry with
+    // an !important box-shadow. St appends inline properties after the
+    // stylesheet cascade, so an inline reset is the only form a theme cannot
+    // win against. Keep this in sync with the .spotlight-entry rules in
+    // stylesheet.css.
+    entry.set_style(
+        'background-color: transparent; ' +
+        'border: none; ' +
+        'box-shadow: none; ' +
+        'outline: none;');
+
     entryBox.add_child(searchIcon);
     entryBox.add_child(entry);
 

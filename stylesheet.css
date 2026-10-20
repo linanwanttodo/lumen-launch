@@ -34,30 +34,46 @@
   box-shadow: none;
 }
 
-/* the actual entry inside the entry box */
-.spotlight-entry {
-  background-color: transparent;
-  border: none;
+/* the actual entry inside the entry box.
+
+   GNOME Shell themes style the bare StEntry actor, and StEntry:focus draws
+   an accent ring with !important in themes such as Yaru. The search field
+   must blend into the card, so every property that could draw a box is
+   reset with !important: no fill, no border, no focus ring, no hover fill.
+
+   The second selector is deliberately long: some themes (Yaru) are loaded
+   through the user-theme extension as custom stylesheets too, so they sit
+   in the same cascade origin as this file. The extra classes and the type
+   selector raise specificity above any plain "StEntry:focus" rule. */
+.spotlight-entry,
+.spotlight-entry:hover,
+.spotlight-entry:focus,
+.spotlight-container .spotlight-entry-box StEntry.spotlight-entry,
+.spotlight-container .spotlight-entry-box StEntry.spotlight-entry:hover,
+.spotlight-container .spotlight-entry-box StEntry.spotlight-entry:focus {
+  background-color: transparent !important;
+  border: none !important;
   border-radius: 0;
+  box-shadow: none !important;
+  outline: none !important;
   padding: 8px 14px 8px 0;
   font-size: 16px;
   font-weight: 400;
 }
 
-.spotlight-entry:focus {
-  border: none;
-  outline: none;
-}
-
-/* results list - transparent, lives inside the card */
-/* fixed height of ~5 result rows so the popup stays at "search box + 5 rows" */
-/* and more results are reached by scrolling */
+/* Results list - transparent, lives inside the card. The viewport height is
+   measured and set by spotlightPopup.js so exactly N whole rows are visible
+   in both list and grid layouts. */
 .spotlight-results {
   background-color: transparent;
   border-radius: 0;
-  padding: 4px 0 2px 0;
-  max-height: 220px;
+  /* small right inset keeps list rows clear of the overlay scrollbar */
+  padding: 4px 4px 2px 0;
   margin-top: 2px;
+  /* fallback viewport for the previous JS build, which relied on CSS for
+     the height; the current build overrides this with an inline style that
+     is measured from real row heights */
+  max-height: 220px;
   box-shadow: none;
 }
 
@@ -67,65 +83,91 @@
   margin: 3px 12px 1px 12px;
 }
 
-/* grid layout - exactly 4 full rows of tiles visible before scrolling:
-   tile height is fixed at 96px below, so row pitch = 96 + 8 margin = 104,
-   4 rows = 416, + 4 top + 8 bottom padding = 428. no half row peeks at
-   rest, so a hovered tile's rounded highlight is never sliced by the
-   viewport edge */
+/* Grid layout: whole rows only. Tile size, gaps, margins, and the viewport
+   height all come from src/popup/gridLayout.js, so a selected tile is never
+   sliced by the viewport edge and the last column never touches the card. */
 .spotlight-results.spotlight-results-grid {
-  max-height: 428px;
   /* horizontal breathing room so the last tile column never touches the
-     card edge (grid only; list rows keep their own padding) */
+     card edge; the vertical max-height is computed from whole rows in JS
+     (grid only; list rows keep their own padding). The CSS value below is
+     the fallback for the previous JS build, which did not set one inline. */
   padding: 4px 8px 8px 8px;
+  max-height: 428px;
 }
 
-/* one horizontal strip of tiles in grid layout; the 24px spacing is the gap
-   between tile highlight boxes, so hovering one tile never shades neighbours */
+/* One horizontal strip of tiles in the grid layout. Spacing and vertical
+   margins are set inline by the current build so the grid math and the
+   rendered layout cannot drift apart; these CSS values keep the previous
+   build (which read them from CSS) working during the same session. */
 .spotlight-grid-row {
   spacing: 24px;
   margin: 4px 0;
 }
 
-/* thin overlay-style scrollbar (macOS-like) for both list and grid layouts:
-   transparent trough, 3px rounded handle hugging the right card edge */
+/* Thin overlay-style scrollbar for both list and grid layouts: transparent
+   trough, 4px rounded handle hugging the right card edge. No hover state.
+
+   GNOME Shell 50 renamed the handle's style class to .vhandle (the old
+   StButton#vhandle selector no longer matches), so both forms are listed
+   here. The width is pinned so a shell theme cannot widen the bar and cover
+   the last grid column. */
 .spotlight-results StScrollBar {
-  padding: 2px 3px 2px 0;
+  padding: 2px 0;
+  min-width: 4px;
+  min-height: 4px;
 }
 
 .spotlight-results StScrollBar StBin#trough {
   background-color: transparent;
   border: none;
-  min-width: 3px;
+  min-width: 0;
+  min-height: 0;
 }
 
-.spotlight-results StScrollBar StButton#vhandle {
-  min-width: 3px;
+.spotlight-results StScrollBar > .vhandle,
+.spotlight-results StScrollBar > .hhandle,
+.spotlight-results StScrollBar StButton#vhandle,
+.spotlight-results StScrollBar StButton#hhandle {
+  min-width: 4px;
+  min-height: 4px;
   padding: 0;
   border: none;
   border-radius: 2px;
   background-color: rgba(142, 142, 147, 0.5);
+  transition-duration: 0ms;
 }
 
-.spotlight-results StScrollBar StButton#vhandle:hover {
-  background-color: rgba(142, 142, 147, 0.85);
+/* explicit hover/active overrides so themes with their own handle hover
+   color cannot reintroduce a hover effect */
+.spotlight-results StScrollBar > .vhandle:hover,
+.spotlight-results StScrollBar > .hhandle:hover,
+.spotlight-results StScrollBar > .vhandle:active,
+.spotlight-results StScrollBar > .hhandle:active,
+.spotlight-results StScrollBar StButton#vhandle:hover,
+.spotlight-results StScrollBar StButton#hhandle:hover,
+.spotlight-results StScrollBar StButton#vhandle:active,
+.spotlight-results StScrollBar StButton#hhandle:active {
+  min-width: 4px;
+  min-height: 4px;
+  border: none;
+  background-color: rgba(142, 142, 147, 0.5);
+  transition-duration: 0ms;
 }
 
-/* grid tile - icon on top, label below, launchpad style; keeps the */
-/* spotlight-result class so per-theme hover/selected colors apply.
-   compound selector so the tile rules win over the later .spotlight-result.
-   FIXED height keeps the 4-row viewport math exact (see .spotlight-results-grid).
-   NO transition-duration here on purpose: with one, the highlight fades out
-   for a moment after the pointer leaves, so sweeping across the grid leaves
-   several neighbouring tiles glowing at once */
+
+/* Grid tile - icon on top, label below, launchpad style. Reuses the
+   spotlight-result class for per-theme selection colors. Width and height are
+   assigned by spotlightPopup.js; the compound selector makes these padding
+   and spacing rules win over the later .spotlight-result rule.
+   No transition and no hover state: only the keyboard selection highlights. */
 .spotlight-result.spotlight-result-tile {
-  height: 96px;
-  padding: 12px 4px 10px 4px;
+  padding: 8px 6px;
   border-radius: 12px;
   spacing: 2px;
 }
 
 .spotlight-tile-icon {
-  margin-bottom: 8px;
+  margin-bottom: 2px;
 }
 
 .spotlight-tile-label {
@@ -188,7 +230,7 @@
 
 /* ================================================================== */
 /* themes                                                              */
-/* each theme overrides background, text, secondary text, hover bar,   */
+/* each theme overrides background, text, secondary text, selected bar, */
 /* accent, caret and selection color for every popup surface.          */
 /* ================================================================== */
 
@@ -217,8 +259,6 @@
   color: #f5f5f7;
 }
 
-.spotlight-theme-dark .spotlight-result:hover,
-.spotlight-theme-dark .spotlight-result:focus,
 .spotlight-theme-dark .spotlight-result.spotlight-selected {
   background-color: rgba(255, 255, 255, 0.12);
   color: #ffffff;
@@ -228,8 +268,6 @@
   color: #98989d;
 }
 
-.spotlight-theme-dark .spotlight-result:hover .spotlight-result-description,
-.spotlight-theme-dark .spotlight-result:focus .spotlight-result-description,
 .spotlight-theme-dark .spotlight-result.spotlight-selected .spotlight-result-description {
   color: rgba(255, 255, 255, 0.85);
 }
@@ -270,8 +308,6 @@
   color: #1d1d1f;
 }
 
-.spotlight-theme-light .spotlight-result:hover,
-.spotlight-theme-light .spotlight-result:focus,
 .spotlight-theme-light .spotlight-result.spotlight-selected {
   background-color: rgba(0, 0, 0, 0.08);
   color: #000000;
@@ -281,8 +317,6 @@
   color: #86868b;
 }
 
-.spotlight-theme-light .spotlight-result:hover .spotlight-result-description,
-.spotlight-theme-light .spotlight-result:focus .spotlight-result-description,
 .spotlight-theme-light .spotlight-result.spotlight-selected .spotlight-result-description {
   color: rgba(0, 0, 0, 0.75);
 }
@@ -323,8 +357,6 @@
   color: #eceff4;
 }
 
-.spotlight-theme-nord .spotlight-result:hover,
-.spotlight-theme-nord .spotlight-result:focus,
 .spotlight-theme-nord .spotlight-result.spotlight-selected {
   background-color: #3b4252;
   color: #eceff4;
@@ -334,8 +366,6 @@
   color: #81a1c1;
 }
 
-.spotlight-theme-nord .spotlight-result:hover .spotlight-result-description,
-.spotlight-theme-nord .spotlight-result:focus .spotlight-result-description,
 .spotlight-theme-nord .spotlight-result.spotlight-selected .spotlight-result-description {
   color: #d8dee9;
 }
@@ -376,8 +406,6 @@
   color: #f8f8f2;
 }
 
-.spotlight-theme-dracula .spotlight-result:hover,
-.spotlight-theme-dracula .spotlight-result:focus,
 .spotlight-theme-dracula .spotlight-result.spotlight-selected {
   background-color: #44475a;
   color: #f8f8f2;
@@ -387,8 +415,6 @@
   color: #6272a4;
 }
 
-.spotlight-theme-dracula .spotlight-result:hover .spotlight-result-description,
-.spotlight-theme-dracula .spotlight-result:focus .spotlight-result-description,
 .spotlight-theme-dracula .spotlight-result.spotlight-selected .spotlight-result-description {
   color: #bd93f9;
 }
@@ -429,8 +455,6 @@
   color: #abb2bf;
 }
 
-.spotlight-theme-one-dark .spotlight-result:hover,
-.spotlight-theme-one-dark .spotlight-result:focus,
 .spotlight-theme-one-dark .spotlight-result.spotlight-selected {
   background-color: #3b4048;
   color: #e6e6e6;
@@ -440,8 +464,6 @@
   color: #5c6370;
 }
 
-.spotlight-theme-one-dark .spotlight-result:hover .spotlight-result-description,
-.spotlight-theme-one-dark .spotlight-result:focus .spotlight-result-description,
 .spotlight-theme-one-dark .spotlight-result.spotlight-selected .spotlight-result-description {
   color: #98a0aa;
 }
@@ -482,8 +504,6 @@
   color: #586e75;
 }
 
-.spotlight-theme-solarized-light .spotlight-result:hover,
-.spotlight-theme-solarized-light .spotlight-result:focus,
 .spotlight-theme-solarized-light .spotlight-result.spotlight-selected {
   background-color: #eee8d5;
   color: #073642;
@@ -493,8 +513,6 @@
   color: #93a1a1;
 }
 
-.spotlight-theme-solarized-light .spotlight-result:hover .spotlight-result-description,
-.spotlight-theme-solarized-light .spotlight-result:focus .spotlight-result-description,
 .spotlight-theme-solarized-light .spotlight-result.spotlight-selected .spotlight-result-description {
   color: #586e75;
 }

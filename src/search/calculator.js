@@ -46,15 +46,10 @@ export function evaluateArithmetic(input) {
                 return null;
             if (op === '*')
                 value = value * right;
-            else if (op === '/') {
-                if (right === 0)
-                    return null;
+            else if (op === '/')
                 value = value / right;
-            } else {
-                if (right === 0)
-                    return null;
+            else
                 value = value % right;
-            }
         }
         return value;
     }
@@ -90,11 +85,16 @@ export function evaluateArithmetic(input) {
     const result = parseExpression();
     if (result === null || pos !== tokens.length)
         return null;
-    if (!isFinite(result) || isNaN(result))
-        return null;
+    // NaN is returned for division or modulo by zero so the caller can show
+    // a real calculator message instead of treating the input as a search.
     return result;
 }
 
 export function formatNumber(n) {
-    return String(n);
+    if (!Number.isFinite(n))
+        return '';
+    // Strip binary floating point noise such as 0.30000000000000004 while
+    // keeping enough significant digits for normal calculator use.
+    const rounded = Number.parseFloat(n.toPrecision(12));
+    return String(rounded);
 }

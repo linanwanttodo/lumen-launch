@@ -3,18 +3,23 @@
 
 import St from 'gi://St';
 import Clutter from 'gi://Clutter';
+import Pango from 'gi://Pango';
 
-// builds a single result row with icon title and click/hover handling.
-// the extra spotlight-result-row class carries the row's inset margins
-// (grid tiles reuse .spotlight-result for their hover colors and must not
-// inherit the row margins)
-export function buildResultRow(result, resultIndex, onActivate, onHover) {
+// builds a single result row with icon, title, optional description and
+// click handling. rows are NOT focusable: the search entry owns the keyboard
+// focus for the whole lifetime of the popup, and tab/arrow keys are routed
+// through the popup itself. making rows focusable used to let Tab move focus
+// away from the entry, after which typing and Escape stopped working.
+// the extra spotlight-result-row class carries the row's inset margins and
+// fixed height (grid tiles reuse .spotlight-result for their selection colors
+// and must not inherit the row geometry).
+export function buildResultRow(result, resultIndex, onActivate) {
     const hbox = new St.BoxLayout({
         style_class: 'spotlight-result spotlight-result-row',
         vertical: false,
         reactive: true,
-        can_focus: true,
-        track_hover: true,
+        can_focus: false,
+        x_expand: true,
     });
 
     const iconParams = {
@@ -38,15 +43,25 @@ export function buildResultRow(result, resultIndex, onActivate, onHover) {
         y_align: Clutter.ActorAlign.CENTER,
         x_expand: true,
     });
-    text.add_child(new St.Label({
+
+    const title = new St.Label({
         style_class: 'spotlight-result-title',
         text: result.title,
-    }));
+        x_expand: true,
+    });
+    title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+    title.clutter_text.single_line_mode = true;
+    text.add_child(title);
+
     if (result.description) {
-        text.add_child(new St.Label({
+        const description = new St.Label({
             style_class: 'spotlight-result-description',
             text: result.description,
-        }));
+            x_expand: true,
+        });
+        description.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+        description.clutter_text.single_line_mode = true;
+        text.add_child(description);
     }
 
     hbox.add_child(icon);
@@ -55,13 +70,13 @@ export function buildResultRow(result, resultIndex, onActivate, onHover) {
     hbox._resultIndex = resultIndex;
 
     hbox.connectObject(
-        'button-release-event', () => {
+        'button-release-event', (_, event) => {
+            // only the primary button activates; right/middle clicks should
+            // not launch whatever happens to be under the pointer
+            if (event.get_button() !== Clutter.BUTTON_PRIMARY)
+                return Clutter.EVENT_PROPAGATE;
             onActivate(result);
             return Clutter.EVENT_STOP;
-        },
-        'enter-event', () => {
-            onHover(resultIndex);
-            return Clutter.EVENT_PROPAGATE;
         },
         hbox,
     );

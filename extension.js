@@ -32,12 +32,18 @@ export default class SpotlightExtension extends Extension {
     }
 
     _grabShortcut(accelerator) {
-        this._keybindingManager.listenFor(accelerator, () => {
+        const grabbed = this._keybindingManager.listenFor(accelerator, () => {
             if (this._popup.visible)
                 this._popup.close();
             else
                 this._popup.open();
         });
+
+        if (!grabbed) {
+            console.warn(
+                `lumen-launch: could not register ${accelerator}. ` +
+                'Another application or the input method may already use it.');
+        }
     }
 
     disable() {

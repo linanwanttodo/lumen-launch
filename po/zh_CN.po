@@ -31,6 +31,12 @@ msgstr "蓝牙"
 msgid "Calculator"
 msgstr "计算器"
 
+msgid "Cannot divide by zero"
+msgstr "不能除以零"
+
+msgid "Check the expression"
+msgstr "请检查表达式"
+
 msgid "Click here, then press a key combination"
 msgstr "点击此处，然后按下组合键"
 
@@ -94,7 +100,7 @@ msgstr "网络"
 msgid "No Results"
 msgstr "无结果"
 
-msgid "No results for "%s""
+msgid "No results for \"%s\""
 msgstr "没有“%s”的结果"
 
 msgid "Not set (will default to Ctrl+Space)"
@@ -105,6 +111,9 @@ msgstr "通知"
 
 msgid "Online Accounts"
 msgstr "在线账户"
+
+msgid "Open %s in your browser"
+msgstr "在浏览器中打开 %s"
 
 msgid "Theme"
 msgstr "主题"
@@ -154,14 +163,17 @@ msgstr "搜索"
 msgid "Search apps..."
 msgstr "搜索应用…"
 
+msgid "Search the web for \"%s\""
+msgstr "在网上搜索“%s”"
+
 msgid "Search engine"
 msgstr "搜索引擎"
 
 msgid "Set shortcut to Ctrl+Space"
 msgstr "将快捷键设置为 Ctrl+Space"
 
-msgid "Set the shortcut to open Spotlight"
-msgstr "设置打开 Spotlight 的快捷键"
+msgid "Set the shortcut to open Lumen launch"
+msgstr "设置打开 Lumen launch 的快捷键"
 
 msgid "Settings"
 msgstr "设置"
@@ -199,8 +211,8 @@ msgstr "用户"
 msgid "Web Search"
 msgstr "网页搜索"
 
-msgid "Web search only appears when no apps or settings match"
-msgstr "仅当没有匹配的应用或设置时才显示网页搜索"
+msgid "Web search only appears when no local results match"
+msgstr "仅当没有本地结果时才显示网页搜索"
 
 msgid "Wi-Fi"
 msgstr "Wi-Fi"

@@ -70,7 +70,7 @@ export function searchFiles(query, maxResults, callback) {
     const finish = () => {
         sourceId = 0;
         closeIters();
-        results.sort((a, b) => b.score - a.score);
+        results.sort((a, b) => a.score - b.score);
         callback(results.slice(0, maxResults).map(r => r.data));
     };
 
@@ -140,7 +140,18 @@ export function searchFiles(query, maxResults, callback) {
                 }
             } else if (type === Gio.FileType.REGULAR && !name.startsWith('.')) {
                 const clean = name.replace(/\.[^.]+$/, '');
-                const score = Math.max(fuzzyScore(query, name), fuzzyScore(query, clean));
+                // Lower score is better, so keep the better of the two
+                // matches; -1 means "no match" and must not win over a
+                // real score.
+                const nameScore = fuzzyScore(query, name);
+                const cleanScore = fuzzyScore(query, clean);
+                let score;
+                if (nameScore < 0)
+                    score = cleanScore;
+                else if (cleanScore < 0)
+                    score = nameScore;
+                else
+                    score = Math.min(nameScore, cleanScore);
                 if (score < 0 || results.length >= maxResults * 3)
                     continue;
                 results.push({score, data: {
