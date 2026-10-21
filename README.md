@@ -96,6 +96,40 @@ then log out and back in and run
 gnome-extensions enable lumen-launch@linanwanttodo.github.io
 ```
 
+## development
+
+On Wayland, GNOME Shell is the compositor and the session cannot be restarted
+without ending it. GNOME Shell imports an extension's top-level `extension.js`
+exactly once and never evicts it, and every module it pulls in is cached the
+same way. Disabling and re-enabling the extension is a lifecycle recycle, not
+a reload: it keeps serving the code that was on disk during the first import.
+
+That makes two rules necessary while working on this extension:
+
+- changes to `stylesheet.css` take effect after a disable and enable
+- changes to any JavaScript file need a new shell process, which on Wayland
+  means logging out and back in
+
+A nested shell gives a fresh process without touching the running desktop:
+
+```bash
+sudo apt-get install -y mutter-dev-bin
+gnome-shell --devkit --wayland
+```
+
+The nested shell shares the home directory and the gsettings of the running
+session, so the extension under test sees the same settings.
+
+The `gnome-wayland-reload` helper automates the deploy step and can hot-swap
+the top-level `extension.js` through Looking Glass:
+
+```bash
+~/.agents/skills/gnome-wayland-reload/scripts/reload-extension.sh .
+```
+
+It only reloads the top-level file. A change in an imported module still
+needs a fresh shell process.
+
 ## preferences
 
 open with
