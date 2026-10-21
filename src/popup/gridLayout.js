@@ -22,9 +22,11 @@ export const GRID = Object.freeze({
     // in grid mode so a full row of tiles always fits.
     COLUMNS: 5,
     GAP: 24,
-    // Width the popup is clamped to in grid mode. With 5 columns, 24px gaps
-    // and the paddings above, this leaves a tile width of about 140px.
-    MIN_POPUP_WIDTH: 820,
+    // Width the popup is clamped to in grid mode. With 5 columns, 24px gaps,
+    // the paddings above and the scrollbar reserve, this leaves a tile width
+    // of 138px, which is the proportion the grid had before it became
+    // width adaptive.
+    MIN_POPUP_WIDTH: 840,
     TILE_HEIGHT: 96,
     ROW_MARGIN: 4,
     MAX_VISIBLE_ROWS: 4,
