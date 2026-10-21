@@ -70,7 +70,7 @@ class SpotlightPopup extends St.BoxLayout {
         this._allocationChangedId = 0;
         this._stagePressId = 0;
         this._themeClass = '';
-        this._gridColumns = GRID.MAX_COLUMNS;
+        this._gridColumns = GRID.COLUMNS;
         this._visibleGridRows = GRID.MAX_VISIBLE_ROWS;
         this._opening = false;
 
@@ -163,13 +163,17 @@ class SpotlightPopup extends St.BoxLayout {
     }
 
     // applies the configured width, clamped to the primary monitor so the
-    // popup can never be wider than the screen. The column count adapts to
-    // the resulting width instead of forcing a fixed minimum width.
+    // popup can never be wider than the screen. Grid tiles need more
+    // horizontal room than list rows, so grid mode also clamps the width up
+    // to the grid minimum; that keeps the fixed 5 column layout intact.
     _applyWidth() {
         const monitor = Main.layoutManager.primaryMonitor;
         const preferred = this._settings.get_int('popup-width');
         const maxWidth = monitor ? Math.max(360, monitor.width - 80) : preferred;
-        this.width = Math.min(preferred, maxWidth);
+        const width = this._isGridMode()
+            ? Math.max(preferred, GRID.MIN_POPUP_WIDTH)
+            : preferred;
+        this.width = Math.min(width, maxWidth);
         this._gridColumns = this._gridMetrics().columns;
         this._reposition();
     }
@@ -201,7 +205,9 @@ class SpotlightPopup extends St.BoxLayout {
     }
 
     _onLayoutModeChanged() {
-        // width no longer depends on the layout mode, but the column count does
+        // the width depends on the layout mode: grid mode widens the popup
+        // to the grid minimum so a full row of five tiles fits
+        this._applyWidth();
         this._gridColumns = this._gridMetrics().columns;
         if (!this.visible)
             return;

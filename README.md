@@ -20,7 +20,7 @@ ctrl + space
 ## features
 
 - **fuzzy app search** — type an app name or abbreviation, `ffx` finds Firefox
-- **two result layouts** — classic list rows or an icon grid (5x4 at the default width, up to 9 columns as the popup widens), switchable in Preferences → Appearance
+- **two result layouts** — classic list rows or an icon grid (5x4, Launchpad style), switchable in Preferences → Appearance
 - **all apps** — when the search box is empty, shows every installed app, most-used first
 - **6 color themes** — Dark, Light, Nord, Dracula, One Dark, Solarized Light, switchable in preferences
 - **inline calculator** — type `12 * 8 + 3`, press Enter to copy the result to the clipboard
@@ -137,7 +137,7 @@ each file has a single responsibility
 | `src/popup/resultsContainer.js` | scrollable results area |
 | `src/popup/resultRow.js` | builds a single result row with icon and text |
 | `src/popup/resultTile.js` | builds a single grid tile (icon + label) for the grid layout |
-| `src/popup/gridLayout.js` | pure grid geometry: column count, tile width, whole-row viewport height |
+| `src/popup/gridLayout.js` | pure grid geometry: fixed 5-column layout, tile width, whole-row viewport height |
 | `src/popup/noResults.js` | empty state widget |
 | `src/search/appSearch.js` | fuzzy app search + full app list (most-used first) via Shell.AppSystem/AppUsage |
 | `src/search/fileSearch.js` | home-directory file and folder search |

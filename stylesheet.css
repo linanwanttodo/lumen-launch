@@ -161,13 +161,14 @@
    and spacing rules win over the later .spotlight-result rule.
    No transition and no hover state: only the keyboard selection highlights. */
 .spotlight-result.spotlight-result-tile {
-  padding: 8px 6px;
+  height: 96px;
+  padding: 12px 4px 10px 4px;
   border-radius: 12px;
   spacing: 2px;
 }
 
 .spotlight-tile-icon {
-  margin-bottom: 2px;
+  margin-bottom: 8px;
 }
 
 .spotlight-tile-label {

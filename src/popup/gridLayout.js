@@ -17,20 +17,24 @@ export const GRID = Object.freeze({
     // made narrower and centered: this value ends up as an equal gutter on
     // both sides, wide enough to keep the last tile clear of a 4px bar.
     SCROLLBAR_WIDTH: 20,
-    GAP: 12,
-    MIN_COLUMNS: 2,
-    MAX_COLUMNS: 9,
-    TILE_MIN_WIDTH: 88,
-    TILE_MAX_WIDTH: 132,
-    TILE_HEIGHT: 108,
+    // The grid is a fixed 5x4 launchpad layout. The column count never
+    // changes with the popup width; the popup is widened to MIN_POPUP_WIDTH
+    // in grid mode so a full row of tiles always fits.
+    COLUMNS: 5,
+    GAP: 24,
+    // Width the popup is clamped to in grid mode. With 5 columns, 24px gaps
+    // and the paddings above, this leaves a tile width of about 140px.
+    MIN_POPUP_WIDTH: 820,
+    TILE_HEIGHT: 96,
     ROW_MARGIN: 4,
     MAX_VISIBLE_ROWS: 4,
 });
 
 // Computes the column count and tile width for a popup of the given width.
-// Columns grow with the popup until tiles reach TILE_MAX_WIDTH, and shrink
-// when tiles would become narrower than TILE_MIN_WIDTH. The returned width
-// always keeps a full row inside the available space.
+// The layout is a fixed 5 column grid, so the column count does not depend
+// on the width. The tile width is derived from the space that is actually
+// available, which keeps a full row inside the card even when the popup is
+// narrower than the grid minimum.
 export function computeGridMetrics(popupWidth) {
     const available = Math.max(1,
         popupWidth -
@@ -38,22 +42,8 @@ export function computeGridMetrics(popupWidth) {
         GRID.PADDING_X * 2 -
         GRID.SCROLLBAR_WIDTH);
 
-    let columns = Math.floor(
-        (available + GRID.GAP) / (GRID.TILE_MIN_WIDTH + GRID.GAP));
-    columns = Math.max(GRID.MIN_COLUMNS,
-        Math.min(GRID.MAX_COLUMNS, columns));
-
-    let tileWidth = tileWidthFor(available, columns);
-
-    while (tileWidth > GRID.TILE_MAX_WIDTH && columns < GRID.MAX_COLUMNS) {
-        columns++;
-        tileWidth = tileWidthFor(available, columns);
-    }
-
-    while (tileWidth < GRID.TILE_MIN_WIDTH && columns > GRID.MIN_COLUMNS) {
-        columns--;
-        tileWidth = tileWidthFor(available, columns);
-    }
+    const columns = GRID.COLUMNS;
+    const tileWidth = tileWidthFor(available, columns);
 
     return {available, columns, tileWidth};
 }
